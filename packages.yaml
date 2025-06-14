@@ -9,13 +9,6 @@ packages:
           cxx: /usr/bin/clang++
   gcc:
     externals:
-    - spec: gcc@15.1.0 languages:='c,c++,fortran'
-      prefix: /opt/homebrew
-      extra_attributes:
-        compilers:
-          c: /opt/homebrew/bin/gcc-15
-          cxx: /opt/homebrew/bin/g++-15
-          fortran: /opt/homebrew/bin/gfortran
     - spec: gcc@12.4.0 languages:='c,c++,fortran'
       prefix: /opt/homebrew
       extra_attributes:
@@ -37,6 +30,13 @@ packages:
           c: /opt/homebrew/bin/gcc-14
           cxx: /opt/homebrew/bin/g++-14
           fortran: /opt/homebrew/bin/gfortran-14
+    - spec: gcc@15.1.0 languages:='c,c++,fortran'
+      prefix: /opt/homebrew
+      extra_attributes:
+        compilers:
+          c: /opt/homebrew/bin/gcc-15
+          cxx: /opt/homebrew/bin/g++-15
+          fortran: /opt/homebrew/bin/gfortran-15
 
   all:
     providers:
