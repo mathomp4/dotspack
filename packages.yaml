@@ -1,0 +1,135 @@
+packages:
+  apple-clang:
+    externals:
+    - spec: apple-clang@17.0.0
+      prefix: /usr
+      extra_attributes:
+        compilers:
+          c: /usr/bin/clang
+          cxx: /usr/bin/clang++
+  gcc:
+    externals:
+    - spec: gcc@15.1.0 languages:='c,c++,fortran'
+      prefix: /opt/homebrew
+      extra_attributes:
+        compilers:
+          c: /opt/homebrew/bin/gcc-15
+          cxx: /opt/homebrew/bin/g++-15
+          fortran: /opt/homebrew/bin/gfortran
+    - spec: gcc@12.4.0 languages:='c,c++,fortran'
+      prefix: /opt/homebrew
+      extra_attributes:
+        compilers:
+          c: /opt/homebrew/bin/gcc-12
+          cxx: /opt/homebrew/bin/g++-12
+          fortran: /opt/homebrew/bin/gfortran-12
+    - spec: gcc@13.3.0 languages:='c,c++,fortran'
+      prefix: /opt/homebrew
+      extra_attributes:
+        compilers:
+          c: /opt/homebrew/bin/gcc-13
+          cxx: /opt/homebrew/bin/g++-13
+          fortran: /opt/homebrew/bin/gfortran-13
+    - spec: gcc@14.2.0 languages:='c,c++,fortran'
+      prefix: /opt/homebrew
+      extra_attributes:
+        compilers:
+          c: /opt/homebrew/bin/gcc-14
+          cxx: /opt/homebrew/bin/g++-14
+          fortran: /opt/homebrew/bin/gfortran-14
+
+  all:
+    providers:
+      mpi: [openmpi]
+      blas: [openblas]
+      lapack: [openblas]
+  hdf5:
+    variants: +fortran +szip +hl +threadsafe +mpi
+    # Note that cdo requires threadsafe, but hdf5 doesn't
+    # seem to want that with parallel. Hmm.
+  netcdf-c:
+    variants: ~hdf4 +dap
+  esmf:
+    variants: ~pnetcdf ~xerces
+  cdo:
+    variants: ~proj ~fftw3
+    # cdo wanted a lot of extra stuff for proj and fftw3. Turn off for now
+  pflogger:
+    variants: +mpi
+  pfunit:
+    variants: +mpi +fhamcrest
+  fms:
+    variants: precision=32,64 +quad_precision ~gfs_phys +openmp +pic constants=GEOS build_type=Release +deprecated_io
+  mapl:
+    variants: +extdata2g +fargparse +pflogger +pfunit ~pnetcdf
+  sz3:
+    variants: +hdf5
+  openmpi:
+    variants: +internal-hwloc +internal-libevent +internal-pmix
+
+  diffutils:
+    externals:
+    - spec: diffutils@3.12
+      prefix: /opt/homebrew
+  openssh:
+    externals:
+    - spec: openssh@9.9p2
+      prefix: /usr
+  flex:
+    externals:
+    - spec: flex@2.6.4+lex
+      prefix: /usr
+  ninja:
+    externals:
+    - spec: ninja@1.12.1
+      prefix: /opt/homebrew
+  gawk:
+    externals:
+    - spec: gawk@5.3.1
+      prefix: /opt/homebrew
+  npm:
+    externals:
+    - spec: npm@11.3.0
+      prefix: /opt/homebrew
+  texinfo:
+    externals:
+    - spec: texinfo@5.2
+      prefix: /usr/local
+  cmake:
+    externals:
+    - spec: cmake@4.0.2
+      prefix: /opt/homebrew
+  subversion:
+    externals:
+    - spec: subversion@1.14.5
+      prefix: /opt/homebrew
+  libtool:
+    externals:
+    - spec: libtool@2.5.4
+      prefix: /opt/homebrew
+  cvs:
+    externals:
+    - spec: cvs@1.12.13
+      prefix: /opt/homebrew
+  git:
+    externals:
+    - spec: git@2.49.0~tcltk
+      prefix: /opt/homebrew
+    - spec: git@2.39.5~tcltk
+      prefix: /usr
+  pkgconf:
+    externals:
+    - spec: pkgconf@2.4.3
+      prefix: /opt/homebrew
+  git-lfs:
+    externals:
+    - spec: git-lfs@3.6.1
+      prefix: /opt/homebrew
+  groff:
+    externals:
+    - spec: groff@1.23.0
+      prefix: /opt/homebrew
+  bash:
+    externals:
+    - spec: bash@5.2.37
+      prefix: /opt/homebrew
