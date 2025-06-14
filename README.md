@@ -1,6 +1,6 @@
-# dotspack for Dagobah
+# dotspack for Home
 
-This is a collection of .spack files for dagobah
+This is a collection of .spack files for home
 
 ## Homebrew
 
