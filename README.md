@@ -145,7 +145,7 @@ repos:
   builtin:
     git: git@github.com:mathomp4/spack-packages.git
     destination: /Users/fortran/spack-packages-mathomp4
-  geosesm: /Users/fortran/geosesm-spack
+  geosesm: /Users/fortran/geosesm-spack/spack_repo/geosesm
 ```
 
 Again, change as needed if you are using the official spack packages.

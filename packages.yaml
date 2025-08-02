@@ -1,12 +1,4 @@
 packages:
-  apple-clang:
-    externals:
-    - spec: apple-clang@17.0.0
-      prefix: /usr
-      extra_attributes:
-        compilers:
-          c: /usr/bin/clang
-          cxx: /usr/bin/clang++
   gcc:
     externals:
     - spec: gcc@12.4.0 languages:='c,c++,fortran'
@@ -16,14 +8,14 @@ packages:
           c: /opt/homebrew/bin/gcc-12
           cxx: /opt/homebrew/bin/g++-12
           fortran: /opt/homebrew/bin/gfortran-12
-    - spec: gcc@13.3.0 languages:='c,c++,fortran'
+    - spec: gcc@13.4.0 languages:='c,c++,fortran'
       prefix: /opt/homebrew
       extra_attributes:
         compilers:
           c: /opt/homebrew/bin/gcc-13
           cxx: /opt/homebrew/bin/g++-13
           fortran: /opt/homebrew/bin/gfortran-13
-    - spec: gcc@14.2.0 languages:='c,c++,fortran'
+    - spec: gcc@14.3.0 languages:='c,c++,fortran'
       prefix: /opt/homebrew
       extra_attributes:
         compilers:
@@ -38,6 +30,14 @@ packages:
           cxx: /opt/homebrew/bin/g++-15
           fortran: /opt/homebrew/bin/gfortran-15
 
+  apple-clang:
+    externals:
+    - spec: apple-clang@17.0.0
+      prefix: /usr
+      extra_attributes:
+        compilers:
+          c: /usr/bin/clang
+          cxx: /usr/bin/clang++
   all:
     providers:
       mpi: [openmpi]
