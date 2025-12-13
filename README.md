@@ -26,21 +26,19 @@ These are based on those from spack-stack
 
 ```bash
 brew install coreutils
-brew install gcc@14
+brew install gcc
 brew install git
 brew install lmod
 brew install wget
 brew install bash
-brew install curl
+brew install tcsh
 brew install cmake
 brew install openssl
 brew install rust
 ```
 
 NOTE 1: The install of gcc will be slow as they are built from source since we are using a non-standard location for homebrew.
-NOTE 2: We specify `gcc@14` as GEOS does not yet support GCC 14. But, it's possible something from brew will ask for GCC 14 and that
-might be installed.
-NOTE 3: Yes, `rust` is there. Some Python projects need it
+NOTE 2: Yes, `rust` is there. Some Python projects need it
 
 ### .zshenv
 
@@ -64,7 +62,6 @@ If you want to use the official spack, you can change the clone command to:
 ```bash
 git clone -c feature.manyFiles=true git@github.com:spack/spack.git spack
 ```
-
 
 
 ## Environment
@@ -99,6 +96,9 @@ then
    elif [[ $OS_VERSION == 15 ]]
    then
       OS_NAME='sequoia'
+   elif [[ $OS_VERSION == 26 ]]
+   then
+      OS_NAME='tahoe'
    else
       OS_NAME='unknown'
    fi
@@ -148,7 +148,8 @@ repos:
   geosesm: /Users/fortran/geosesm-spack/spack_repo/geosesm
 ```
 
-Again, change as needed if you are using the official spack packages.
+Again, change as needed if you are using the official spack packages and, of course, use your username
+in the path (or wherever you cloned the repos to).
 
 ### config
 
@@ -169,13 +170,26 @@ For example, I got:
 ```bash
 ❯ spack compiler find
 ==> Added 4 new compilers to /Users/fortran/.spack/darwin/compilers.yaml
-    gcc@14.2.0  gcc@13.3.0 gcc@12.4.0  apple-clang@17.0.0
+    gcc@15.2.0  gcc@14.3.0 gcc@12.4.0 apple-clang@17.0.0
 ==> Compilers are defined in the following files:
     /Users/fortran/.spack/packages.yaml
 ```
 
 Note that in Spack 1.0.0 and later, the compilers.yaml file is not used. Instead, the compilers are
-added to the `packages.yaml` file. So, you can ignore the compilers.yaml file.
+added to the `packages.yaml` file. So, you can ignore the compilers.yaml file. An example of
+how this will look will be:
+```yaml
+packages:
+  gcc:
+    externals:
+    - spec: gcc@15.2.0 languages:='c,c++,fortran'
+      prefix: /Users/mathomp4/.homebrew/brew
+      extra_attributes:
+        compilers:
+          c: /Users/mathomp4/.homebrew/brew/bin/gcc-15
+          cxx: /Users/mathomp4/.homebrew/brew/bin/g++-15
+          fortran: /Users/mathomp4/.homebrew/brew/bin/gfortran-15
+```
 
 ### packages
 
@@ -186,6 +200,17 @@ we want to exclude some packages that experimentation has found should be built 
 spack external find --exclude bison --exclude openssl \
    --exclude gmake --exclude m4 --exclude curl --exclude python \
    --exclude gettext --exclude perl --exclude meson
+spack external find bash
+```
+
+#### tcsh
+
+For some reason, `tcsh` is not found by `spack external find`. So we add it manually:
+```yaml
+  tcsh:
+    externals:
+    - spec: tcsh@6.24.16
+      prefix: /Users/mathomp4/.homebrew/brew
 ```
 
 #### Additional settings
@@ -215,12 +240,25 @@ packages:
   pfunit:
     variants: +mpi +fhamcrest
   fms:
-    variants: precision=32,64 +quad_precision ~gfs_phys +openmp +pic constants=GEOS +deprecated_io
+    require: '@2024.03 ~gfs_phys +pic constants=GEOS precision=32,64 +deprecated_io ~yaml'
   mapl:
-    variants: +extdata2g +fargparse +pflogger +pfunit ~pnetcdf
+    variants: +extdata2g +fargparse +pflogger +pfunit
 ```
 
 These are based on how we expect libraries to be built for GEOS and MAPL.
+
+### concretizer
+
+We also want to set up the concretizer to not reuse builds. For this, edit
+`concretizer.yaml` by running `spack config edit concretizer` and add:
+
+```yaml
+concretizer:
+  reuse: false
+```
+
+This is less efficient, but it seems to make spack understand that different Fortran packages need
+to be compiled with the same compiler.
 
 ### modules
 

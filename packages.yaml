@@ -1,13 +1,6 @@
 packages:
   gcc:
     externals:
-    - spec: gcc@12.4.0 languages:='c,c++,fortran'
-      prefix: /opt/homebrew
-      extra_attributes:
-        compilers:
-          c: /opt/homebrew/bin/gcc-12
-          cxx: /opt/homebrew/bin/g++-12
-          fortran: /opt/homebrew/bin/gfortran-12
     - spec: gcc@13.4.0 languages:='c,c++,fortran'
       prefix: /opt/homebrew
       extra_attributes:
@@ -38,6 +31,7 @@ packages:
         compilers:
           c: /usr/bin/clang
           cxx: /usr/bin/clang++
+
   all:
     providers:
       mpi: [openmpi]
@@ -59,77 +53,96 @@ packages:
   pfunit:
     variants: +mpi +fhamcrest
   fms:
-    variants: precision=32,64 +quad_precision ~gfs_phys +openmp +pic constants=GEOS build_type=Release +deprecated_io
+    require: '@2024.03 ~gfs_phys +pic constants=GEOS precision=32,64 +deprecated_io ~yaml'
   mapl:
-    variants: +extdata2g +fargparse +pflogger +pfunit ~pnetcdf
+    variants: +extdata2g +fargparse +pflogger +pfunit
   sz3:
     variants: +hdf5
   openmpi:
     variants: +internal-hwloc +internal-libevent +internal-pmix
+  openblas:
+    prefer:
+    - build_system=cmake
 
+  bash:
+    externals:
+    - spec: bash@5.3.9
+      prefix: /opt/homebrew
+  pkgconf:
+    externals:
+    - spec: pkgconf@2.5.1
+      prefix: /opt/homebrew
+  git:
+    externals:
+    - spec: git@2.52.0~tcltk
+      prefix: /opt/homebrew
+    - spec: git@2.39.5~tcltk
+      prefix: /usr
+  groff:
+    externals:
+    - spec: groff@1.23.0
+      prefix: /opt/homebrew
+  cmake:
+    externals:
+    - spec: cmake@4.2.1
+      prefix: /opt/homebrew
   diffutils:
     externals:
     - spec: diffutils@3.12
       prefix: /opt/homebrew
+  tcsh:
+    externals:
+    - spec: tcsh@6.24.16
+      prefix: /opt/homebrew
   openssh:
     externals:
-    - spec: openssh@9.9p2
+    - spec: openssh@10.0p2
       prefix: /usr
-  flex:
-    externals:
-    - spec: flex@2.6.4+lex
-      prefix: /usr
-  ninja:
-    externals:
-    - spec: ninja@1.12.1
-      prefix: /opt/homebrew
   gawk:
     externals:
     - spec: gawk@5.3.1
-      prefix: /opt/homebrew
-  npm:
-    externals:
-    - spec: npm@11.3.0
-      prefix: /opt/homebrew
-  texinfo:
-    externals:
-    - spec: texinfo@5.2
-      prefix: /usr/local
-  cmake:
-    externals:
-    - spec: cmake@4.0.2
-      prefix: /opt/homebrew
-  subversion:
-    externals:
-    - spec: subversion@1.14.5
       prefix: /opt/homebrew
   libtool:
     externals:
     - spec: libtool@2.5.4
       prefix: /opt/homebrew
+  go:
+    externals:
+    - spec: go@1.25.5
+      prefix: /opt/homebrew
+  git-lfs:
+    externals:
+    - spec: git-lfs@3.7.1
+      prefix: /opt/homebrew
+  rust:
+    externals:
+    - spec: rust@1.91.1
+      prefix: /opt/homebrew
+      extra_attributes:
+        cargo: /opt/homebrew/bin/cargo
+        compilers:
+          rust: /opt/homebrew/bin/rustc
   cvs:
     externals:
     - spec: cvs@1.12.13
       prefix: /opt/homebrew
-  git:
+  flex:
     externals:
-    - spec: git@2.49.0~tcltk
-      prefix: /opt/homebrew
-    - spec: git@2.39.5~tcltk
+    - spec: flex@2.6.4+lex
       prefix: /usr
-  pkgconf:
+  texinfo:
     externals:
-    - spec: pkgconf@2.4.3
+    - spec: texinfo@5.2
+      prefix: /usr/local
+  subversion:
+    externals:
+    - spec: subversion@1.14.5
       prefix: /opt/homebrew
-  git-lfs:
+  npm:
     externals:
-    - spec: git-lfs@3.6.1
+    - spec: npm@11.6.2
       prefix: /opt/homebrew
-  groff:
+  ninja:
     externals:
-    - spec: groff@1.23.0
-      prefix: /opt/homebrew
-  bash:
-    externals:
-    - spec: bash@5.2.37
+    - spec: ninja@1.13.2
       prefix: /opt/homebrew
