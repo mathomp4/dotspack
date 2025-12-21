@@ -191,6 +191,42 @@ packages:
           fortran: /Users/mathomp4/.homebrew/brew/bin/gfortran-15
 ```
 
+### toolchains
+
+For simplicity, we'll also setup a toolchain file. An example is:
+```yaml
+
+toolchains:
+  apple-gfortran-15:
+  - spec: "%c=apple-clang"
+    when: "%c"
+  - spec: "%cxx=apple-clang"
+    when: "%cxx"
+  - spec: "%fortran=gcc@15"
+    when: "%fortran"
+  apple-nag:
+  - spec: "%c=apple-clang"
+    when: "%c"
+  - spec: "%cxx=apple-clang"
+    when: "%cxx"
+  - spec: "%fortran=nag"
+    when: "%fortran"
+```
+
+Now when installing packages, instead of doing:
+
+```bash
+spack install mapl %[virtuals=c,cxx] apple-clang@17.0.0 %[virtuals=fortran] gcc@15.2.0
+```
+
+we can do:
+
+```bash
+spack install mapl %apple-gfortran-15
+```
+
+Much simpler!
+
 ### packages
 
 Now we can use `spack external find` to find the packages we need already in homebrew. But,
