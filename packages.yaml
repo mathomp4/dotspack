@@ -153,3 +153,9 @@ packages:
     externals:
     - spec: ninja@1.13.2
       prefix: /opt/homebrew
+  perl:
+    externals:
+    - spec: perl@5.42.0~cpanm+opcode+open+shared+threads
+      prefix: /opt/homebrew
+    - spec: perl@5.34.1~cpanm+opcode+open+shared+threads
+      prefix: /usr
