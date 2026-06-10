@@ -1,7 +1,7 @@
 -- -*- lua -*-
 
 whatis([[Name : apple-clang]])
-whatis([[Version : 17.0.0]])
+whatis([[Version : 21.0.0]])
 whatis([[Target : m3]])
 whatis([[Short description : Apple's Clang compiler]])
 whatis([[Configure options : unknown, software installed outside of Spack]])

@@ -1,29 +1,21 @@
 packages:
   apple-clang:
     externals:
-    - spec: apple-clang@17.0.0
+    - spec: apple-clang@21.0.0
       prefix: /usr
       extra_attributes:
         compilers:
           c: /usr/bin/clang
           cxx: /usr/bin/clang++
-
   gcc:
     externals:
-    - spec: gcc@12.4.0 languages:='c,c++,fortran'
+    - spec: gcc@12.5.0 languages:='c,c++,fortran'
       prefix: /opt/homebrew
       extra_attributes:
         compilers:
           c: /opt/homebrew/bin/gcc-12
           cxx: /opt/homebrew/bin/g++-12
           fortran: /opt/homebrew/bin/gfortran-12
-    - spec: gcc@15.2.0 languages:='c,c++,fortran'
-      prefix: /opt/homebrew
-      extra_attributes:
-        compilers:
-          c: /opt/homebrew/bin/gcc-15
-          cxx: /opt/homebrew/bin/g++-15
-          fortran: /opt/homebrew/bin/gfortran
     - spec: gcc@13.4.0 languages:='c,c++,fortran'
       prefix: /opt/homebrew
       extra_attributes:
@@ -38,6 +30,20 @@ packages:
           c: /opt/homebrew/bin/gcc-14
           cxx: /opt/homebrew/bin/g++-14
           fortran: /opt/homebrew/bin/gfortran-14
+    - spec: gcc@15.2.0 languages:='c,c++,fortran'
+      prefix: /opt/homebrew
+      extra_attributes:
+        compilers:
+          c: /opt/homebrew/bin/gcc-15
+          cxx: /opt/homebrew/bin/g++-15
+          fortran: /opt/homebrew/bin/gfortran
+  llvm:
+    externals:
+    - spec: llvm@22.1.7 ~clang +flang
+      prefix: /opt/homebrew
+      extra_attributes:
+        compilers:
+          fortran: /opt/homebrew/bin/flang
 
   all:
     providers:
@@ -66,10 +72,20 @@ packages:
   sz3:
     variants: +hdf5
   openmpi:
-    variants: +internal-hwloc +internal-libevent +internal-pmix
+    # Note: NAG has a bug with Open MPI 5.0.8
+    require: '@5.0.7'
+    variants: +internal-hwloc +internal-libevent +internal-pmix +fortran
   openblas:
     prefer:
     - build_system=cmake
+    variants: ~dynamic_dispatch
+
+  libpressio:
+    variants: +blosc +blosc2 +fpzip +hdf5 +mpi +netcdf +sz +sz3 +zfp
+  libpressio-tools:
+    variants: +hdf5 +mpi +sperr
+  sperr:
+    variants: ~openmp
 
   bash:
     externals:
