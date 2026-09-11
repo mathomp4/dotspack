@@ -23,14 +23,14 @@ packages:
           c: /opt/homebrew/bin/gcc-13
           cxx: /opt/homebrew/bin/g++-13
           fortran: /opt/homebrew/bin/gfortran-13
-    - spec: gcc@14.3.0 languages:='c,c++,fortran'
+    - spec: gcc@14.4.0 languages:='c,c++,fortran'
       prefix: /opt/homebrew
       extra_attributes:
         compilers:
           c: /opt/homebrew/bin/gcc-14
           cxx: /opt/homebrew/bin/g++-14
           fortran: /opt/homebrew/bin/gfortran-14
-    - spec: gcc@15.2.0 languages:='c,c++,fortran'
+    - spec: gcc@15.3.0 languages:='c,c++,fortran'
       prefix: /opt/homebrew
       extra_attributes:
         compilers:
@@ -91,87 +91,125 @@ packages:
     externals:
     - spec: bash@5.3.9
       prefix: /opt/homebrew
-  pkgconf:
-    externals:
-    - spec: pkgconf@2.5.1
-      prefix: /opt/homebrew
-  git:
-    externals:
-    - spec: git@2.52.0~tcltk
-      prefix: /opt/homebrew
-    - spec: git@2.39.5~tcltk
-      prefix: /usr
-  groff:
-    externals:
-    - spec: groff@1.23.0
-      prefix: /opt/homebrew
-  cmake:
-    externals:
-    - spec: cmake@4.2.1
-      prefix: /opt/homebrew
-  diffutils:
-    externals:
-    - spec: diffutils@3.12
-      prefix: /opt/homebrew
   tcsh:
     externals:
     - spec: tcsh@6.24.16
       prefix: /opt/homebrew
-  openssh:
+  m4:
     externals:
-    - spec: openssh@10.0p2
+    - spec: m4@1.4.6
       prefix: /usr
-  gawk:
+  pkgconf:
     externals:
-    - spec: gawk@5.3.1
-      prefix: /opt/homebrew
-  libtool:
-    externals:
-    - spec: libtool@2.5.4
-      prefix: /opt/homebrew
-  go:
-    externals:
-    - spec: go@1.25.5
+    - spec: pkgconf@2.5.1
       prefix: /opt/homebrew
   git-lfs:
     externals:
     - spec: git-lfs@3.7.1
       prefix: /opt/homebrew
+  diffutils:
+    externals:
+    - spec: diffutils@3.12
+      prefix: /opt/homebrew
+  openssh:
+    externals:
+    - spec: openssh@10.2p1
+      prefix: /usr
+  cvs:
+    externals:
+    - spec: cvs@1.12.13
+      prefix: /opt/homebrew
   rust:
     externals:
-    - spec: rust@1.91.1
+    - spec: rust@1.93.1
       prefix: /opt/homebrew
       extra_attributes:
         cargo: /opt/homebrew/bin/cargo
         compilers:
           rust: /opt/homebrew/bin/rustc
-  cvs:
+  curl:
     externals:
-    - spec: cvs@1.12.13
-      prefix: /opt/homebrew
-  flex:
-    externals:
-    - spec: flex@2.6.4+lex
+    - spec: curl@8.7.1+gssapi+ldap+nghttp2
       prefix: /usr
-  texinfo:
+  gawk:
     externals:
-    - spec: texinfo@5.2
-      prefix: /usr/local
-  subversion:
-    externals:
-    - spec: subversion@1.14.5
+    - spec: gawk@5.4.0
       prefix: /opt/homebrew
-  npm:
+  libtool:
     externals:
-    - spec: npm@11.6.2
+    - spec: libtool@2.5.4
+      prefix: /opt/homebrew
+  autoconf:
+    externals:
+    - spec: autoconf@2.72
+      prefix: /opt/homebrew
+  openssl:
+    externals:
+    - spec: openssl@3.6.1
+      prefix: /opt/homebrew
+  python:
+    externals:
+    - spec: python@3.14.3+bz2+ctypes+dbm~freethreading+lzma+pyexpat~pythoncmd+readline+sqlite3+ssl~tkinter+uuid+zlib+zstd
+      prefix: /opt/homebrew
+    - spec: python@3.9.6+bz2+crypt+ctypes+dbm+lzma+pyexpat~pythoncmd+readline+sqlite3+ssl+tix+tkinter+uuid+zlib
+      prefix: /usr
+  gettext:
+    externals:
+    - spec: gettext@1.0
+      prefix: /opt/homebrew
+  groff:
+    externals:
+    - spec: groff@1.23.0
       prefix: /opt/homebrew
   ninja:
     externals:
     - spec: ninja@1.13.2
       prefix: /opt/homebrew
+  subversion:
+    externals:
+    - spec: subversion@1.14.5
+      prefix: /opt/homebrew
+  flex:
+    externals:
+    - spec: flex@2.6.4+lex
+      prefix: /usr
+  git:
+    externals:
+    - spec: git@2.53.0~tcltk
+      prefix: /opt/homebrew
+    - spec: git@2.50.1~tcltk
+      prefix: /usr
   perl:
     externals:
     - spec: perl@5.42.0~cpanm+opcode+open+shared+threads
       prefix: /opt/homebrew
     - spec: perl@5.34.1~cpanm+opcode+open+shared+threads
       prefix: /usr
+  automake:
+    externals:
+    - spec: automake@1.18.1
+      prefix: /opt/homebrew
+  go:
+    externals:
+    - spec: go@1.26.0
+      prefix: /opt/homebrew
+  bison:
+    externals:
+    - spec: bison@2.3
+      prefix: /usr
+  texinfo:
+    externals:
+    - spec: texinfo@5.2
+      prefix: /usr/local
+  graphviz:
+    externals:
+    - spec: graphviz@14.1.2
+      prefix: /opt/homebrew
+  npm:
+    externals:
+    - spec: npm@11.9.0
+      prefix: /opt/homebrew
+  cmake:
+    externals:
+    - spec: cmake@4.2.3
+      prefix: /opt/homebrew
