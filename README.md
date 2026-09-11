@@ -398,8 +398,7 @@ spack install
 ### Fix up the environment for CC/CXX/FC
 
 At the moment, the environment will not have `CC`, `CXX` and `FC` set to *anything* which is
-not what we want. Unfortunately, this is a spack bug:
-
+not what we want. Unfortunately, this is a spack bug ([spack/spack#51855](https://github.com/spack/spack/issues/51855)).
 
 For now, you can manually set them by doing:
 
@@ -411,6 +410,10 @@ spack config add env_vars:set:FC:$(which gfortran-16)
 
 NOTE: You probably need to make a new terminal/subshell and reactivate the environment for this to take effect.
 If I find a spack way, I'll update this.
+
+> [!WARNING]
+> **Do NOT run `spack load geosgcm-deps` when using Spack Environments!**
+> When using Spack Environments (`spack env activate`), the environment view automatically symlinks all binaries (`mpifort`, `mpicc`, `nc-config`, etc.) into `.spack-env/view/bin` and prepends it to `$PATH`. Running `spack load` inside an active environment can disrupt `$PATH` and fails to load link dependencies like Open MPI.
 
 ## Not using Spack Environments
 

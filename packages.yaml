@@ -43,11 +43,6 @@ packages:
     - spec: cmake@4.4.3
       prefix: /opt/homebrew
 
-  curl:
-    externals:
-    - spec: curl@8.7.1+gssapi+ldap+nghttp2
-      prefix: /usr
-
   cvs:
     externals:
     - spec: cvs@1.12.13
@@ -57,6 +52,11 @@ packages:
     externals:
     - spec: diffutils@3.12
       prefix: /opt/homebrew
+
+  esmf:
+    require:
+    - spec: +debug
+      when: platform=darwin
 
   flex:
     externals:
@@ -179,8 +179,10 @@ packages:
     variants: ~dynamic_dispatch
 
   openmpi:
-    # Note: NAG has a bug with Open MPI 5.0.8
-    require: '@5.0.7'
+    # Note: NAG has a bug with Open MPI >= 5.0.8
+    require:
+    - spec: '@5.0.7'
+      when: '%nag'
     variants: +internal-hwloc +internal-libevent +internal-pmix +fortran
 
   openssh:
