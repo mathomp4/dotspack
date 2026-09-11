@@ -4,7 +4,7 @@ modules:
     - lmod
     lmod:
       core_compilers:
-      - apple-clang@16.0.0
+      - apple-clang@21.0.0
       hierarchy:
       - mpi
       hash_length: 0

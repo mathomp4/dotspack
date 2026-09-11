@@ -196,7 +196,7 @@ how this will look will be:
         compilers:
           c: /opt/homebrew/bin/gcc-16
           cxx: /opt/homebrew/bin/g++-16
-          fortran: /opt/homebrew/bin/gfortran
+          fortran: /opt/homebrew/bin/gfortran-16
 ```
 
 ### toolchains
@@ -224,7 +224,7 @@ toolchains:
 Now when installing packages, instead of doing:
 
 ```bash
-spack install mapl %[virtuals=c,cxx] apple-clang@17.0.0 %[virtuals=fortran] gcc@16.2.0
+spack install mapl %[virtuals=c,cxx] apple-clang@21.0.0 %[virtuals=fortran] gcc@16.2.0
 ```
 
 we can do:
@@ -268,25 +268,13 @@ packages:
       mpi: [openmpi]
       blas: [openblas]
       lapack: [openblas]
-  hdf5:
-    variants: +fortran +szip +hl +threadsafe +mpi
-    # Note that cdo requires threadsafe, but hdf5 doesn't
-    # seem to want that with parallel. Hmm.
-  netcdf-c:
-    variants: ~hdf4 +dap
-  esmf:
-    variants: ~pnetcdf ~xerces
   cdo:
     variants: ~proj ~fftw3
     # cdo wanted a lot of extra stuff for proj and fftw3. Turn off for now
-  pflogger:
-    variants: +mpi
-  pfunit:
-    variants: +mpi +fhamcrest
-  fms:
-    require: '@2024.03 ~gfs_phys +pic constants=GEOS precision=32,64 +deprecated_io ~yaml'
   mapl:
-    variants: +extdata2g +fargparse +pflogger +pfunit
+    variants: +pfunit
+  netcdf-c:
+    variants: +dap
 ```
 
 These are based on how we expect libraries to be built for GEOS and MAPL.
@@ -315,7 +303,7 @@ modules:
     - lmod
     lmod:
       core_compilers:
-      - apple-clang@17.0.0
+      - apple-clang@21.0.0
       hierarchy:
       - mpi
       hash_length: 0
@@ -465,7 +453,7 @@ cmake --build build --target install -j 6
 
 NOTE: If you used `spack load` you'll need to supply the compilers to the first command:
 ```
-cmake -B build -S . --install-prefix=$(pwd)/install --fresh -DCMAKE_Fortran_COMPILER=gfortran-14 -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++
+cmake -B build -S . --install-prefix=$(pwd)/install --fresh -DCMAKE_Fortran_COMPILER=gfortran-16 -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++
 ```
 as `spack load` does not populate `FC`, `CC` and `CXX`.
 
@@ -490,7 +478,7 @@ and add:
 
 ```csh
 source $LMOD_PKG/init/csh
-module use -a $SPACK_ROOT/share/spack/lmod/darwin-sequoia-aarch64/Core
+module use -a $SPACK_ROOT/share/spack/lmod/darwin-tahoe-aarch64/Core
 module load apple-clang openmpi esmf python py-pyyaml py-numpy pfunit pflogger fargparse zlib-ng
 module list
 setenv DYLD_LIBRARY_PATH ${LD_LIBRARY_PATH}:${GEOSDIR}/lib

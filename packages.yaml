@@ -1,4 +1,10 @@
 packages:
+  all:
+    providers:
+      mpi: [openmpi]
+      blas: [openblas]
+      lapack: [openblas]
+
   apple-clang:
     externals:
     - spec: apple-clang@21.0.0
@@ -7,6 +13,56 @@ packages:
         compilers:
           c: /usr/bin/clang
           cxx: /usr/bin/clang++
+
+  autoconf:
+    externals:
+    - spec: autoconf@2.73
+      prefix: /opt/homebrew
+
+  automake:
+    externals:
+    - spec: automake@1.18.1
+      prefix: /opt/homebrew
+
+  bash:
+    externals:
+    - spec: bash@5.3.15
+      prefix: /opt/homebrew
+
+  bison:
+    externals:
+    - spec: bison@2.3
+      prefix: /usr
+
+  cdo:
+    variants: ~proj ~fftw3
+    # cdo wanted a lot of extra stuff for proj and fftw3. Turn off for now
+
+  cmake:
+    externals:
+    - spec: cmake@4.4.3
+      prefix: /opt/homebrew
+
+  curl:
+    externals:
+    - spec: curl@8.7.1+gssapi+ldap+nghttp2
+      prefix: /usr
+
+  cvs:
+    externals:
+    - spec: cvs@1.12.13
+      prefix: /opt/homebrew
+
+  diffutils:
+    externals:
+    - spec: diffutils@3.12
+      prefix: /opt/homebrew
+
+  flex:
+    externals:
+    - spec: flex@2.6.4+lex
+      prefix: /usr
+
   gcc:
     externals:
     - spec: gcc@12.5.0 languages:='c,c++,fortran'
@@ -36,14 +92,57 @@ packages:
         compilers:
           c: /opt/homebrew/bin/gcc-15
           cxx: /opt/homebrew/bin/g++-15
-          fortran: /opt/homebrew/bin/gfortran
+          fortran: /opt/homebrew/bin/gfortran-15
     - spec: gcc@16.2.0 languages:='c,c++,fortran'
       prefix: /opt/homebrew
       extra_attributes:
         compilers:
           c: /opt/homebrew/bin/gcc-16
           cxx: /opt/homebrew/bin/g++-16
-          fortran: /opt/homebrew/bin/gfortran
+          fortran: /opt/homebrew/bin/gfortran-16
+
+  gettext:
+    externals:
+    - spec: gettext@1.0
+      prefix: /opt/homebrew
+
+  git:
+    externals:
+    - spec: git@2.55.0~tcltk
+      prefix: /opt/homebrew
+    - spec: git@2.50.1~tcltk
+      prefix: /usr
+
+  git-lfs:
+    externals:
+    - spec: git-lfs@3.8.0
+      prefix: /opt/homebrew
+
+  go:
+    externals:
+    - spec: go@1.27.1
+      prefix: /opt/homebrew
+
+  graphviz:
+    externals:
+    - spec: graphviz@16.0.0
+      prefix: /opt/homebrew
+
+  groff:
+    externals:
+    - spec: groff@1.24.1
+      prefix: /opt/homebrew
+
+  libpressio:
+    variants: +blosc +blosc2 +fpzip +hdf5 +mpi +netcdf +sz +sz3 +zfp
+
+  libpressio-tools:
+    variants: +hdf5 +mpi +sperr
+
+  libtool:
+    externals:
+    - spec: libtool@2.6.2
+      prefix: /opt/homebrew
 
   llvm:
     externals:
@@ -53,171 +152,97 @@ packages:
         compilers:
           fortran: /opt/homebrew/bin/flang
 
-  all:
-    providers:
-      mpi: [openmpi]
-      blas: [openblas]
-      lapack: [openblas]
-  hdf5:
-    variants: +fortran +szip +hl +threadsafe +mpi
-    # Note that cdo requires threadsafe, but hdf5 doesn't
-    # seem to want that with parallel. Hmm.
-  netcdf-c:
-    variants: ~hdf4 +dap
-  esmf:
-    variants: ~pnetcdf ~xerces
-  cdo:
-    variants: ~proj ~fftw3
-    # cdo wanted a lot of extra stuff for proj and fftw3. Turn off for now
-  pflogger:
-    variants: +mpi
-  pfunit:
-    variants: +mpi +fhamcrest
-  fms:
-    require: '@2024.03 ~gfs_phys +pic constants=GEOS precision=32,64 +deprecated_io ~yaml'
+  m4:
+    externals:
+    - spec: m4@1.4.6
+      prefix: /usr
+
   mapl:
-    variants: +extdata2g +fargparse +pflogger +pfunit
-  sz3:
-    variants: +hdf5
-  openmpi:
-    # Note: NAG has a bug with Open MPI 5.0.8
-    require: '@5.0.7'
-    variants: +internal-hwloc +internal-libevent +internal-pmix +fortran
+    variants: +pfunit
+
+  netcdf-c:
+    variants: +dap
+
+  ninja:
+    externals:
+    - spec: ninja@1.13.2
+      prefix: /opt/homebrew
+
+  npm:
+    externals:
+    - spec: npm@11.19.1
+      prefix: /opt/homebrew
+
   openblas:
     prefer:
     - build_system=cmake
     variants: ~dynamic_dispatch
 
-  libpressio:
-    variants: +blosc +blosc2 +fpzip +hdf5 +mpi +netcdf +sz +sz3 +zfp
-  libpressio-tools:
-    variants: +hdf5 +mpi +sperr
-  sperr:
-    variants: ~openmp
+  openmpi:
+    # Note: NAG has a bug with Open MPI 5.0.8
+    require: '@5.0.7'
+    variants: +internal-hwloc +internal-libevent +internal-pmix +fortran
 
-  bash:
-    externals:
-    - spec: bash@5.3.9
-      prefix: /opt/homebrew
-  tcsh:
-    externals:
-    - spec: tcsh@6.24.16
-      prefix: /opt/homebrew
-  m4:
-    externals:
-    - spec: m4@1.4.6
-      prefix: /usr
-  pkgconf:
-    externals:
-    - spec: pkgconf@2.5.1
-      prefix: /opt/homebrew
-  git-lfs:
-    externals:
-    - spec: git-lfs@3.7.1
-      prefix: /opt/homebrew
-  diffutils:
-    externals:
-    - spec: diffutils@3.12
-      prefix: /opt/homebrew
   openssh:
     externals:
-    - spec: openssh@10.2p1
+    - spec: openssh@10.3p1
       prefix: /usr
-  cvs:
+
+  openssl:
     externals:
-    - spec: cvs@1.12.13
+    - spec: openssl@3.6.4
       prefix: /opt/homebrew
+
+  perl:
+    externals:
+    - spec: perl@5.44.0~cpanm+opcode+open+shared+threads
+      prefix: /opt/homebrew
+    - spec: perl@5.34.1~cpanm+opcode+open+shared+threads
+      prefix: /usr
+
+  pkgconf:
+    externals:
+    - spec: pkgconf@3.0.7
+      prefix: /opt/homebrew
+
+  python:
+    externals:
+    - spec: python@3.14.7+bz2+ctypes+dbm~freethreading+lzma+pyexpat~pythoncmd+readline+sqlite3+ssl~tkinter+uuid+zlib+zstd
+      prefix: /opt/homebrew
+    - spec: python@3.9.6+bz2+crypt+ctypes+dbm+lzma+pyexpat~pythoncmd+readline+sqlite3+ssl+tix+tkinter+uuid+zlib
+      prefix: /usr
+
   rust:
     externals:
-    - spec: rust@1.93.1
+    - spec: rust@1.98.1
       prefix: /opt/homebrew
       extra_attributes:
         cargo: /opt/homebrew/bin/cargo
         compilers:
           rust: /opt/homebrew/bin/rustc
-  curl:
-    externals:
-    - spec: curl@8.7.1+gssapi+ldap+nghttp2
-      prefix: /usr
-  gawk:
-    externals:
-    - spec: gawk@5.4.0
-      prefix: /opt/homebrew
-  libtool:
-    externals:
-    - spec: libtool@2.5.4
-      prefix: /opt/homebrew
-  autoconf:
-    externals:
-    - spec: autoconf@2.72
-      prefix: /opt/homebrew
-  openssl:
-    externals:
-    - spec: openssl@3.6.1
-      prefix: /opt/homebrew
-  python:
-    externals:
-    - spec: python@3.14.3+bz2+ctypes+dbm~freethreading+lzma+pyexpat~pythoncmd+readline+sqlite3+ssl~tkinter+uuid+zlib+zstd
-      prefix: /opt/homebrew
-    - spec: python@3.9.6+bz2+crypt+ctypes+dbm+lzma+pyexpat~pythoncmd+readline+sqlite3+ssl+tix+tkinter+uuid+zlib
-      prefix: /usr
-  gettext:
-    externals:
-    - spec: gettext@1.0
-      prefix: /opt/homebrew
-  groff:
-    externals:
-    - spec: groff@1.23.0
-      prefix: /opt/homebrew
-  ninja:
-    externals:
-    - spec: ninja@1.13.2
-      prefix: /opt/homebrew
+
+  sperr:
+    variants: ~openmp
+
   subversion:
     externals:
     - spec: subversion@1.14.5
       prefix: /opt/homebrew
-  flex:
+
+  sz3:
+    variants: +hdf5
+
+  tcsh:
     externals:
-    - spec: flex@2.6.4+lex
-      prefix: /usr
-  git:
-    externals:
-    - spec: git@2.53.0~tcltk
+    - spec: tcsh@6.24.16
       prefix: /opt/homebrew
-    - spec: git@2.50.1~tcltk
-      prefix: /usr
-  perl:
-    externals:
-    - spec: perl@5.42.0~cpanm+opcode+open+shared+threads
-      prefix: /opt/homebrew
-    - spec: perl@5.34.1~cpanm+opcode+open+shared+threads
-      prefix: /usr
-  automake:
-    externals:
-    - spec: automake@1.18.1
-      prefix: /opt/homebrew
-  go:
-    externals:
-    - spec: go@1.26.0
-      prefix: /opt/homebrew
-  bison:
-    externals:
-    - spec: bison@2.3
-      prefix: /usr
+
   texinfo:
     externals:
     - spec: texinfo@5.2
       prefix: /usr/local
-  graphviz:
+
+  typescript:
     externals:
-    - spec: graphviz@14.1.2
-      prefix: /opt/homebrew
-  npm:
-    externals:
-    - spec: npm@11.9.0
-      prefix: /opt/homebrew
-  cmake:
-    externals:
-    - spec: cmake@4.2.3
+    - spec: typescript@7.0.2
       prefix: /opt/homebrew

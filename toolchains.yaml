@@ -20,6 +20,13 @@ toolchains:
     when: "%cxx"
   - spec: "%fortran=gcc@14"
     when: "%fortran"
+  gcc-gfortran-16:
+  - spec: "%c=gcc@16"
+    when: "%c"
+  - spec: "%cxx=gcc@16"
+    when: "%cxx"
+  - spec: "%fortran=gcc@16"
+    when: "%fortran"
   gcc-gfortran-15:
   - spec: "%c=gcc@15"
     when: "%c"
