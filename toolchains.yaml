@@ -1,4 +1,11 @@
 toolchains:
+  apple-gfortran-16:
+  - spec: "%c=apple-clang"
+    when: "%c"
+  - spec: "%cxx=apple-clang"
+    when: "%cxx"
+  - spec: "%fortran=gcc@16"
+    when: "%fortran"
   apple-gfortran-15:
   - spec: "%c=apple-clang"
     when: "%c"
