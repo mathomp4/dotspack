@@ -37,9 +37,17 @@ packages:
           c: /opt/homebrew/bin/gcc-15
           cxx: /opt/homebrew/bin/g++-15
           fortran: /opt/homebrew/bin/gfortran
+    - spec: gcc@16.2.0 languages:='c,c++,fortran'
+      prefix: /opt/homebrew
+      extra_attributes:
+        compilers:
+          c: /opt/homebrew/bin/gcc-16
+          cxx: /opt/homebrew/bin/g++-16
+          fortran: /opt/homebrew/bin/gfortran
+
   llvm:
     externals:
-    - spec: llvm@22.1.7 ~clang +flang
+    - spec: llvm@23.1.1 ~clang +flang
       prefix: /opt/homebrew
       extra_attributes:
         compilers:
