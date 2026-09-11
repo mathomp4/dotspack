@@ -271,6 +271,10 @@ packages:
   cdo:
     variants: ~proj ~fftw3
     # cdo wanted a lot of extra stuff for proj and fftw3. Turn off for now
+  esmf:
+    require:
+    - spec: +debug
+      when: platform=darwin
   mapl:
     variants: +pfunit
   netcdf-c:
@@ -410,6 +414,28 @@ spack config add env_vars:set:FC:$(which gfortran-16)
 
 NOTE: You probably need to make a new terminal/subshell and reactivate the environment for this to take effect.
 If I find a spack way, I'll update this.
+
+### Apple Silicon: hwloc OpenCL / Metal Crash (`SIGILL: Illegal instruction: 4`)
+
+On macOS Apple Silicon, Open MPI's internal `hwloc` topology discovery compiles an OpenCL plugin (`hwloc_opencl.so`). During `MPI_Init()`, `hwloc` queries Apple's OpenCL framework to discover GPU devices. On Apple Silicon, Apple's OpenCL routes queries through Metal (`MTLCopyAllDevices`), which triggers an illegal instruction crash in the GPU driver (`AGXMetalG15G_C0`) resulting in:
+
+```text
+prterun noticed that process rank X exited on signal 4 (Illegal instruction: 4).
+```
+
+To prevent this crash, `hwloc` must be instructed to skip OpenCL probing via:
+
+```bash
+export HWLOC_COMPONENTS="-opencl"
+```
+
+This is permanently configured across our environments via `~/.spack/env_vars.yaml`:
+
+```yaml
+env_vars:
+  set:
+    HWLOC_COMPONENTS: "-opencl"
+```
 
 > [!WARNING]
 > **Do NOT run `spack load geosgcm-deps` when using Spack Environments!**
