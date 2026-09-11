@@ -40,6 +40,16 @@ brew install rust
 NOTE 1: The install of gcc will be slow as they are built from source since we are using a non-standard location for homebrew.
 NOTE 2: Yes, `rust` is there. Some Python projects need it
 
+#### gawk from Homebrew
+
+There is currently an issue between `gawk` from Homebrew and spack building `ncurses`. The issue
+is it doesn't build `ncurses` which is a dependency of something in the chain. The workaround
+is to *not* have `gawk` from Homebrew. So just to be safe:
+
+```bash
+brew uninstall gawk
+```
+
 ### .zshenv
 
 Add to .zshenv:
@@ -170,7 +180,7 @@ For example, I got:
 ```bash
 ❯ spack compiler find
 ==> Added 4 new compilers to /Users/fortran/.spack/darwin/compilers.yaml
-    gcc@15.2.0  gcc@14.3.0 gcc@12.4.0 apple-clang@17.0.0
+    gcc@16.2.0 gcc@15.2.0 gcc@13.3.0 gcc@12.5.0 apple-clang@21.0.0
 ==> Compilers are defined in the following files:
     /Users/fortran/.spack/packages.yaml
 ```
@@ -179,16 +189,14 @@ Note that in Spack 1.0.0 and later, the compilers.yaml file is not used. Instead
 added to the `packages.yaml` file. So, you can ignore the compilers.yaml file. An example of
 how this will look will be:
 ```yaml
-packages:
-  gcc:
-    externals:
-    - spec: gcc@15.2.0 languages:='c,c++,fortran'
-      prefix: /Users/mathomp4/.homebrew/brew
+  packages:
+    - spec: gcc@16.2.0 languages:='c,c++,fortran'
+      prefix: /opt/homebrew
       extra_attributes:
         compilers:
-          c: /Users/mathomp4/.homebrew/brew/bin/gcc-15
-          cxx: /Users/mathomp4/.homebrew/brew/bin/g++-15
-          fortran: /Users/mathomp4/.homebrew/brew/bin/gfortran-15
+          c: /opt/homebrew/bin/gcc-16
+          cxx: /opt/homebrew/bin/g++-16
+          fortran: /opt/homebrew/bin/gfortran
 ```
 
 ### toolchains
@@ -197,12 +205,12 @@ For simplicity, we'll also setup a toolchain file. An example is:
 ```yaml
 
 toolchains:
-  apple-gfortran-15:
+  apple-gfortran-16:
   - spec: "%c=apple-clang"
     when: "%c"
   - spec: "%cxx=apple-clang"
     when: "%cxx"
-  - spec: "%fortran=gcc@15"
+  - spec: "%fortran=gcc@16"
     when: "%fortran"
   apple-nag:
   - spec: "%c=apple-clang"
@@ -216,13 +224,13 @@ toolchains:
 Now when installing packages, instead of doing:
 
 ```bash
-spack install mapl %[virtuals=c,cxx] apple-clang@17.0.0 %[virtuals=fortran] gcc@15.2.0
+spack install mapl %[virtuals=c,cxx] apple-clang@17.0.0 %[virtuals=fortran] gcc@16.2.0
 ```
 
 we can do:
 
 ```bash
-spack install mapl %apple-gfortran-15
+spack install mapl %apple-gfortran-16
 ```
 
 Much simpler!
@@ -246,7 +254,7 @@ For some reason, `tcsh` is not found by `spack external find`. So we add it manu
   tcsh:
     externals:
     - spec: tcsh@6.24.16
-      prefix: /Users/mathomp4/.homebrew/brew
+      prefix: /opt/homebrew
 ```
 
 #### Additional settings
@@ -265,7 +273,7 @@ packages:
     # Note that cdo requires threadsafe, but hdf5 doesn't
     # seem to want that with parallel. Hmm.
   netcdf-c:
-    variants: +hdf4 +dap
+    variants: ~hdf4 +dap
   esmf:
     variants: ~pnetcdf ~xerces
   cdo:
@@ -333,56 +341,108 @@ modules:
     - LD_LIBRARY_PATH
 ```
 
+## Spack Environment
 
-## Spack Install
+The best way to manage all the bits needed for GEOSgcm and MAPL is to use a Spack Environment.
 
-Now we install packages.
+In the example below, we'll work on one for GEOSgcm.
 
-```bash
-spack install python py-numpy py-pyyaml py-ruamel-yaml
-spack install openmpi
-spack install esmf
-spack install gftl gftl-shared fargparse pfunit pflogger yafyaml
-spack install mepo
-spack install udunits
-```
+NOTE NOTE NOTE: At the moment, when you deactivate your spack environment, it will screw
+up your shell:
 
-This could just as well be:
-```bash
-spack install --only dependents [geosgcm|mapl]
-```
+https://github.com/spack/spack/issues/48391
 
-### Regenerate Modules
-
-Sometimes spack needs a nudge to generate lmod files. This can be done (at any time) with:
+it removes things like homebrew from your PATH. So, until that is fixed, you might want to
+use the spack environment in a subshell, e.g.,
 
 ```bash
-spack module lmod refresh --delete-tree -y
+zsh
+spack env activate geosgcm-gcc16
+# do stuff
+spack env deactivate
+exit
 ```
 
-### Extra apple-clang module
+or a new terminal window.
 
-Spack is not able to create a modulefile for apple-clang since it is a
-builtin compiler or something. But, we want to have a modulefile for it
-so we can have `FC`, `CC` etc. set in the environment. So we make one. There
-is a copy in the `extra_modulefiles` directory. Copy it to the right place:
+### Create environment
 
 ```bash
-cp -a extra_modulefiles/apple-clang $SPACK_ROOT/share/spack/lmod/darwin-sequoia-aarch64/Core/
+spack env create geosgcm-gcc16
 ```
 
-Note that the Spack lmod directory won't be created until you run a first `spack install` command.
+### Activate environment
+
+```bash
+spack env activate geosgcm-gcc16
+```
+
+### Add packages
+
+#### GEOSgcm
+
+```bash
+spack add geosgcm %apple-gfortran-16
+```
+
+#### GEOSgcm Dependencies
+
+If you only want to install the dependencies of GEOSgcm, you can do:
+
+```bash
+spack add geosgcm-deps %apple-gfortran-16
+```
+
+### Concretize
+
+```bash
+spack concretize -Uf
+```
+
+### Spack Install
+
+Now we install into the environment:
+
+```bash
+spack install
+```
+
+### Fix up the environment for CC/CXX/FC
+
+At the moment, the environment will not have `CC`, `CXX` and `FC` set to *anything* which is
+not what we want. Unfortunately, this is a spack bug:
 
 
-## Building GEOS and MAPL
+For now, you can manually set them by doing:
+
+```bash
+spack config add env_vars:set:CC:$(which clang)
+spack config add env_vars:set:CXX:$(which clang++)
+spack config add env_vars:set:FC:$(which gfortran-16)
+```
+
+NOTE: You probably need to make a new terminal/subshell and reactivate the environment for this to take effect.
+If I find a spack way, I'll update this.
+
+## Not using Spack Environments
+
+### spack install
+
+If you are not using spack environments, you can install GEOSgcm (or whatever) directly with:
+
+```bash
+spack install geosgcm %apple-gfortran-16
+```
 
 ### spack load
 
 If you do `spack load` you need to do:
 
 ```bash
-spack load openmpi esmf python py-pyyaml py-numpy pfunit pflogger fargparse zlib-ng mepo udunits
+spack load geosgcm-deps
 ```
+
+This is true even if you installed `geosgcm` as `geosgcm-deps` is a dependency of `geosgcm`.
 
 ### Loading lmodules
 
